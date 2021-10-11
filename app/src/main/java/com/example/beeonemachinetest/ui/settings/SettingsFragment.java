@@ -3,21 +3,22 @@ package com.example.beeonemachinetest.ui.settings;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.example.beeonemachinetest.R;
 import com.example.beeonemachinetest.base.BaseFragment;
 import com.example.beeonemachinetest.databinding.FragmentSettingsBinding;
-import com.example.beeonemachinetest.ui.home.MainActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.beeonemachinetest.databinding.LayoutContactAlertBinding;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +32,8 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
     private SettingsViewModel settingsViewModel;
     private FragmentSettingsBinding binding;
     SharedPreferences sharedPreferences;
+    AlertDialog alertDialogBuilder;
+    LayoutContactAlertBinding contactAlertBinding;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -96,7 +99,6 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
                     binding.textviewTheme.setText("Switch to Dark Mode");
                     editor.putBoolean("isDarkModeOn", false);
-                    editor.putString("dark", "light");
                     editor.apply();
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -106,16 +108,31 @@ public class SettingsFragment extends BaseFragment implements View.OnClickListen
 
                     binding.textviewTheme.setText("Switch to Light Mode");
                     editor.putBoolean("isDarkModeOn", true);
-                    editor.putString("dark", "dark");
                     editor.apply();
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
 
-
             }
 
-
+        } else if (view == binding.cardViewContact) {
+            contactAlert();
         }
+
     }
+
+    private void contactAlert() {
+
+        alertDialogBuilder = new AlertDialog.Builder(getContext()).create();
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.layout_contact_alert, null);
+        alertDialogBuilder.setView(dialogView);
+
+        if (alertDialogBuilder.getWindow() != null) {
+            alertDialogBuilder.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        alertDialogBuilder.show();
+    }
+
 
 }

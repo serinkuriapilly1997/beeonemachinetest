@@ -33,8 +33,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     HomeFragment homeFragment;
     AlbumFragment albumFragment;
     SettingsFragment settingsFragment;
-    boolean isFirst = true;
-    SharedPreferences sharedPreferences;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,24 +46,11 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         albumFragment = new AlbumFragment();
         settingsFragment = new SettingsFragment();
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(this);
-
-//        sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-//
-//        String mode = sharedPreferences.getString("dark", "");
-//        if (mode.isEmpty())
+        if (savedInstanceState == null) {
 
             binding.bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        }
 
-
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
-//        // Passing each menu ID as a set of Ids because each
-//        // menu should be considered as top level destinations.
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-//                .build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//        NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
 
@@ -76,7 +63,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
             case R.id.navigation_album:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, albumFragment).commit();
-                isFirst = false;
                 return true;
 
             case R.id.navigation_settings:
@@ -89,19 +75,6 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
 
     @Override
     public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
-
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_container, fragment)
-                .setCustomAnimations(0, 0)
-                .commit();
-
-//        int id = getSelectedItem(binding.bottomNavigationView);
-//        binding.bottomNavigationView.setSelectedItemId(id);
-
-
+        super.onConfigurationChanged(newConfig);
     }
-
-
 }
