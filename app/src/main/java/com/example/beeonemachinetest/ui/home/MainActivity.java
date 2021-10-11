@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
@@ -33,13 +34,13 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     HomeFragment homeFragment;
     AlbumFragment albumFragment;
     SettingsFragment settingsFragment;
-
+    SharedPreferences sharedPreferences;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         homeFragment = new HomeFragment();
@@ -49,6 +50,23 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
         if (savedInstanceState == null) {
 
             binding.bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        }
+
+        initUi();
+
+
+    }
+
+    private void initUi() {
+        sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        final boolean isDarkModeOn = sharedPreferences.getBoolean(
+                "isDarkModeOn", false);
+
+        if (isDarkModeOn) {
+
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
     }
@@ -73,8 +91,4 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.O
     }
 
 
-    @Override
-    public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
 }
